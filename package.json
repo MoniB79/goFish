@@ -6,6 +6,10 @@
   "scripts": {
     "test": "jest"
   },
+  "jest": {
+    "collectCoverage": true,
+    "coverageReporters": ["html"]
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",

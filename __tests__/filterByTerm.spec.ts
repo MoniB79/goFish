@@ -1,4 +1,3 @@
-//import {filterByTerm} from "../main.js";
 const filterByTerm = require("../main.js");
 
 describe("Filter function", () => {
