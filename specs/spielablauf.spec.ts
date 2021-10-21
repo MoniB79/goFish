@@ -9,4 +9,11 @@ describe('Spielablauf GoFish testen', () => {
 
         expect(karten.length).toBe(52);
     })
+
+    it('Spiel hat 52 Spielkarten erhalten', () => {
+        const spiel = new Spiel();
+        spiel.starten(spielkarten, spieler);
+
+        expect(spiel.deck.length).toBe(52);
+    })
 })
