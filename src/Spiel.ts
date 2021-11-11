@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import Karte from './value-types/Karte';
+import Spieler from './Entities/Spieler';
 
 export default class Spiel {
     get id() { 
@@ -10,14 +11,20 @@ export default class Spiel {
     get deck() {
         return this._deck;
     }
-    private readonly _deck: ReadonlyArray<Karte> = [];
+    private _deck: ReadonlyArray<Karte> = [];
 
     get spieler() {
         return this._spieler;
     }
-    private readonly _spieler: ReadonlyArray<Spieler> = [];
+    private _spieler: ReadonlyArray<Spieler> = [];
 
-    starten(spielkarten: Karte[], spieler: Spieler[]) {
-        throw new Error('Method not implemented');
+    starten(spielkarten: Karte[], spieler: Spielerliste) {
+        this._deck = [...spielkarten];
+        this._spieler = [...spieler];
     }
 }
+export type Spielerliste = [Spieler, Spieler] |
+[Spieler, Spieler, Spieler] |
+[Spieler, Spieler, Spieler, Spieler] |
+[Spieler, Spieler, Spieler, Spieler, Spieler] |
+[Spieler, Spieler, Spieler, Spieler, Spieler, Spieler];
