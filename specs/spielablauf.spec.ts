@@ -21,11 +21,13 @@ describe('Spielablauf GoFish testen', () => {
         expect(karten.length).toBe(52);
     })
 
-    it('Spiel hat 52 Spielkarten erhalten', () => {
-        const spiel = new Spiel();
-        
+    it('Spiel hat 52 Spielkarten und 2 Spieler erhalten', () => {
+        const spieler = new Spieler('Gregor', SpielerTyp.Mensch);
+        const computerSpieler = new Spieler('Lorem', SpielerTyp.Computer)
 
-        spiel.starten(_spielkarten, _spieler);
+        const spiel = new Spiel();
+
+        spiel.starten(_spielkarten, [spieler, computerSpieler]);
 
         expect(spiel.deck.length).toBe(52);
     })
