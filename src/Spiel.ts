@@ -22,6 +22,18 @@ export default class Spiel {
         this._deck = [...spielkarten];
         this._spieler = [...spieler];
     }
+
+    private verteileFuenfKartenAnSpieler() {
+        this.spieler.forEach(spieler => {
+            for (let index=0; index < 5; index++) {
+                const randomIndex = Math.floor(Math.random() * this.deck.length);
+                const deck = [...this.deck];
+                const karte: Karte[] = deck.splice(randomIndex, 1);
+                spieler.kartenNehmen(karte);
+                this._deck = [...deck];
+            }
+        })
+    }
 }
 export type Spielerliste = [Spieler, Spieler] |
 [Spieler, Spieler, Spieler] |

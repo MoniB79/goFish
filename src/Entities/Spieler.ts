@@ -14,5 +14,6 @@ export default class Spieler {
 
     constructor(public readonly name: string, public readonly spielerType: SpielerTyp) {
 
+
     }
 }
