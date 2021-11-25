@@ -17,6 +17,7 @@ export default class Spieler {
 
     }
 
+    /** @internal */
     kartenNehmen(karten: Karte[]) {
         this._karten = [... this.karten, ... karten];
     }
