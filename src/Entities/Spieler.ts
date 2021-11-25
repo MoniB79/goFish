@@ -16,4 +16,8 @@ export default class Spieler {
 
 
     }
+
+    kartenNehmen(karten: Karte[]) {
+        this._karten = [... this.karten, ... karten];
+    }
 }

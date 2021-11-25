@@ -21,6 +21,7 @@ export default class Spiel {
     starten(spielkarten: Karte[], spieler: Spielerliste) {
         this._deck = [...spielkarten];
         this._spieler = [...spieler];
+        this.verteileFuenfKartenAnSpieler();
     }
 
     private verteileFuenfKartenAnSpieler() {
