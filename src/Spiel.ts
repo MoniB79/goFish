@@ -1,9 +1,10 @@
 import { v4 as uuidv4 } from 'uuid';
 import Karte from './value-types/Karte';
 import Spieler from './Entities/Spieler';
+import { Subject } from 'rxjs';
 
 export default class Spiel {
-    get id() { 
+    get id() {
         return this._id;
     }
     private readonly _id: string = uuidv4();
@@ -18,6 +19,12 @@ export default class Spiel {
     }
     private _spieler: ReadonlyArray<Spieler> = [];
 
+    get spielerGewechselt() {
+        return this.spielerGewechseltSubject.asObservable();
+    }
+    private readonly spielerGewechseltSubject = new Subject();
+
+
     starten(spielkarten: Karte[], spieler: Spielerliste) {
         this._deck = [...spielkarten];
         this._spieler = [...spieler];
@@ -26,7 +33,7 @@ export default class Spiel {
 
     private verteileFuenfKartenAnSpieler() {
         this.spieler.forEach(spieler => {
-            for (let index=0; index < 5; index++) {
+            for (let index = 0; index < 5; index++) {
                 const randomIndex = Math.floor(Math.random() * this.deck.length);
                 const deck = [...this.deck];
                 const karte: Karte[] = deck.splice(randomIndex, 1);
