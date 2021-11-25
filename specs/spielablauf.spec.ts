@@ -24,7 +24,7 @@ describe('Spielablauf GoFish testen', () => {
     it('Spiel hat 52 Spielkarten und 2 Spieler erhalten', () => {
         const spiel = new Spiel();
         
-
+        jest.spyOn<any, any>(spiel, 'verteileFuenfKartenAnSpieler').mockImplementation();
         spiel.starten(_spielkarten, _spieler);
 
         expect(spiel.deck.length).toBe(52);
