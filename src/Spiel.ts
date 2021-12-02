@@ -1,7 +1,8 @@
-import { v4 as uuidv4 } from 'uuid';
+import { NIL as NIL_UUID, v4 as uuidv4 } from 'uuid';
 import Karte from './value-types/Karte';
 import Spieler from './Entities/Spieler';
 import { Subject } from 'rxjs';
+import SpielerGewechselt from './domain-events/SpielerGewechselt';
 
 export default class Spiel {
     get id() {
@@ -19,16 +20,24 @@ export default class Spiel {
     }
     private _spieler: ReadonlyArray<Spieler> = [];
 
+    get aktuellerSpielerId() {
+        return this._aktuellerSpielerId;
+    }
+    
+    private _aktuellerSpielerId: string = NIL_UUID;
+
+
     get spielerGewechselt() {
         return this.spielerGewechseltSubject.asObservable();
     }
-    private readonly spielerGewechseltSubject = new Subject();
+    private readonly spielerGewechseltSubject = new Subject<SpielerGewechselt>();
 
 
     starten(spielkarten: Karte[], spieler: Spielerliste) {
         this._deck = [...spielkarten];
         this._spieler = [...spieler];
         this.verteileFuenfKartenAnSpieler();
+        this.naechsterSpieler();
     }
 
     private verteileFuenfKartenAnSpieler() {
@@ -42,6 +51,16 @@ export default class Spiel {
             }
         })
     }
+
+    private naechsterSpieler() {
+        if(this.aktuellerSpielerId === NIL_UUID) {
+            this._aktuellerSpielerId == this.spieler[0].id;
+        }
+        this.spielerGewechseltSubject.next(new SpielerGewechselt(this._aktuellerSpielerId));
+    }
+
+
+
 }
 export type Spielerliste = [Spieler, Spieler] |
 [Spieler, Spieler, Spieler] |
