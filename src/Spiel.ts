@@ -3,6 +3,8 @@ import Karte from './value-types/Karte';
 import Spieler from './Entities/Spieler';
 import { Subject } from 'rxjs';
 import SpielerGewechselt from './domain-events/SpielerGewechselt';
+import SpielerHatKartenErhalten from './domain-events/SpielerHatKartenErhalten';
+import { Wert } from './value-types/Werte';
 
 export default class Spiel {
     get id() {
@@ -31,7 +33,11 @@ export default class Spiel {
         return this.spielerGewechseltSubject.asObservable();
     }
     private readonly spielerGewechseltSubject = new Subject<SpielerGewechselt>();
-
+    
+    get spielerHatKartenErhalten() {
+        return this.spielerHatKartenErhaltenSubject.asObservable();
+    }
+    private readonly spielerHatKartenErhaltenSubject = new Subject<SpielerHatKartenErhalten>();
 
     starten(spielkarten: Karte[], spieler: Spielerliste) {
         this._deck = [...spielkarten];
@@ -54,11 +60,27 @@ export default class Spiel {
 
     private naechsterSpieler() {
         if(this.aktuellerSpielerId === NIL_UUID) {
-            this._aktuellerSpielerId == this.spieler[0].id;
+            this._aktuellerSpielerId = this.spieler[0].id;
         }
         this.spielerGewechseltSubject.next(new SpielerGewechselt(this._aktuellerSpielerId));
     }
 
+    spielerFragtNachKarten(gefragterSpielerId: string, kartenWert: Wert) {
+        const gefragterSpieler = this.gebeSpieler(gefragterSpielerId);
+        const aktuellerSpieler = this.gebeSpieler(this.aktuellerSpielerId);
+        const erhalteneKarten = gefragterSpieler.gebeKarten(kartenWert);
+
+        if (erhalteneKarten?.length) {
+            aktuellerSpieler.kartenNehmen(erhalteneKarten);
+        }
+    }
+    private gebeSpieler(spielerId: string) {
+       const spieler = this.spieler.find(spieler => spieler.id === spielerId);
+       if (!spieler) {
+           throw new Error(`Es gibt keinen Spieler mit der ID ${spielerId}`);
+       }
+       return spieler;
+    }
 
 
 }

@@ -4,6 +4,8 @@ import Spiel from "../src/Spiel"
 import {Spielerliste} from "../src/Spiel"
 import Spieler from "../src/Entities/Spieler";
 import { SpielerTyp } from "../src/value-types/SpielerTyp";
+import SpielerGewechselt from "../src/domain-events/SpielerGewechselt";
+import { Wert } from "../src/value-types/Werte";
 
 describe('Spielablauf GoFish testen', () => {
     let _spielkarten: Karte[];
@@ -44,6 +46,27 @@ describe('Spielablauf GoFish testen', () => {
         spiel.spielerGewechselt.subscribe((spielerGewechselt) => {
             expect(spiel.aktuellerSpielerId).toBe(_spieler[0].id);
             expect(spielerGewechselt.neuerSpielerId).toBe(_spieler[0].id);
+
+            done();
+        })
+
+        spiel.starten(_spielkarten, _spieler);
+
+    });
+    it('Wenn der Spieler fragt UND der Gegenspieler die Karte hat, DANN...', (done) => {
+        const spiel = new Spiel();
+
+        spiel.spielerGewechselt.subscribe( (SpielerGewechselt) => {
+            spiel.spielerFragtNachKarten(spiel.spieler[1].id, Wert.Fünf);
+        })
+
+        spiel.spielerHatKartenErhalten.subscribe((kartenErhaltenVomSpieler) => {
+            expect(kartenErhaltenVomSpieler.spielerId).toBe(_spieler[0].id);
+            expect(kartenErhaltenVomSpieler.karten.length).toBeGreaterThanOrEqual(2);
+            expect(kartenErhaltenVomSpieler.karten[0].wert).toBe(Wert.Fünf);
+            expect(kartenErhaltenVomSpieler.karten[1].wert).toBe(Wert.Fünf);
+            expect(spiel.spieler[0].karten.filter(karten => karten.wert === Wert.Fünf).length).toBeGreaterThanOrEqual(3);
+            expect(spiel.spieler[1].karten.filter(karten => karten.wert === Wert.Fünf).length).toBe(0);
 
             done();
         })
