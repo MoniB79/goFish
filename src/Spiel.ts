@@ -72,6 +72,7 @@ export default class Spiel {
 
         if (erhalteneKarten?.length) {
             aktuellerSpieler.kartenNehmen(erhalteneKarten);
+            this.spielerHatKartenErhaltenSubject.next(new SpielerHatKartenErhalten(this.aktuellerSpielerId, [...erhalteneKarten]));
         }
     }
     private gebeSpieler(spielerId: string) {
