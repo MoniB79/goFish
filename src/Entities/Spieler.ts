@@ -25,8 +25,8 @@ export default class Spieler {
     } 
     /** @internal */
     gebeKarten(kartenWert: Wert) {
-        const karten = this.karten.filter(karte => karte.wert === kartenWert);
-        this._karten = this.karten.filter(karte => karte.wert != kartenWert);
+        const karten = [...this.karten.filter(karte => karte.wert === kartenWert)];
+        this._karten = [...this.karten.filter(karte => karte.wert != kartenWert)];
         return [...karten];
     }
     

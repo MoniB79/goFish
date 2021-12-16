@@ -54,7 +54,7 @@ describe('Spielablauf GoFish testen', () => {
         spiel.starten(_spielkarten, _spieler);
 
     });
-    it('Wenn der Spieler fragt UND der Gegenspieler die Karte hat, DANN...', (done) => {
+    it('Spieler fragt Gegenspieler nach vorhandenen Karten mit Wert, dann erhält Spieler die Karten...', (done) => {
         const computerSpieler = _spieler[1];
         computerSpieler.kartenNehmen([
             new Karte(Farbe.Herz, Wert.Fünf),
